@@ -3,7 +3,7 @@ A DIY road traffic data management system
 
 Influenced by: https://www.hackster.io/hodgestk/traffic-camera-9d3739
 
-Speedhog has a few objectives - here they are in order of increasing complexity (and decreasing likelihood of being fully developed)
+Speedhog has a few objectives - here they are in order of increasing complexity:
 * Serve as a system-of-record for vehicle traffic data captured from private citizen installations such as the one described in the hackster.io article linked above
 * Provide data visualization and analysis tools for traffic data
 * Build a negative reinforcement system - referred to as the *weekly hog* - that will highlight top offending vehicles 
