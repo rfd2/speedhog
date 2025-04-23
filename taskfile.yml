@@ -1,0 +1,28 @@
+version: "3"
+
+vars:
+  SHAPP_PWORD:
+    sh: sed -rn 's/^SHAPP_PWORD=([^\n]+)$$/\1/p' .env
+    # ^ Could not get dotenv to work with taskfile; task version 3.43.2; PopOS 22.04 LTS
+
+tasks:
+  setup:
+    cmds:
+      - echo "setup tasks here!!"
+      - echo "{{.SHAPP_PWORD}}" >> test2.txt
+
+  start-db:
+    cmds:
+      - docker compose -f docker/docker-compose.yml up -d
+
+  init-db:
+    deps: [start-db]
+    cmds:
+      - sleep 5
+      - docker cp db/speedhog-db-config.sql speedhog_db:/tmp/
+      - docker exec -i -e SHAPP_PWORD="{{.SHAPP_PWORD}}" speedhog_db psql -U postgres -f /tmp/speedhog-db-config.sql
+
+  db-teardown:
+    cmds:
+      - docker compose -f docker/docker-compose.yml down
+      - docker volume rm docker_sh_db_data
