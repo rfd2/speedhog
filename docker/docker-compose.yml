@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:17
+    container_name: speedhog_db
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    restart: no
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - sh_db_data:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql.conf
+      - ./pg_hba.conf:/etc/pg_hba.conf
+volumes:
+  sh_db_data:
