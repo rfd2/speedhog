@@ -25,7 +25,7 @@ create table if not exists sh.neighborhoods(
   created timestamp not null
 );
 
--- speedhog is an installation
+-- speedhog is an installation (e.g raspberry pi camera set-up)
 create table if not exists sh.speedhogs(
   speedhog_id serial primary key,
   neighborhood_id integer not null,
@@ -48,6 +48,17 @@ create table if not exists sh.events(
   direction varchar(10) not null,
   captured timestamp not null,
   inserted timestamp default now() not null
+);
+
+-- offenses store violations / speeding events according to speedhog admin configuration
+create table if not exists sh.offenses(
+  offense_id serial primary key,
+  vehicle_id integer not null,
+  event_id integer not null,
+  speedhog_id integer not null,
+  speed smallint not null,
+  direction varchar(10) not null,
+  captured timestamp not null
 );
 
 alter table sh.events replica identity full;
