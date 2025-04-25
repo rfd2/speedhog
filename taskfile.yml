@@ -8,8 +8,7 @@ vars:
 tasks:
   setup:
     cmds:
-      - echo "setup tasks here!!"
-      - echo "{{.SHAPP_PWORD}}" >> test2.txt
+      - echo "not yet..."
 
   start-db:
     cmds:
