@@ -14,14 +14,19 @@ tasks:
     cmds:
       - docker compose -f docker/docker-compose.yml up -d
 
+  stop-db:
+    cmds:
+      - docker compose -f docker/docker-compose.yml down
+
   init-db:
     deps: [start-db]
     cmds:
       - sleep 5
-      - docker cp db/speedhog-db-config.sql speedhog_db:/tmp/
-      - docker exec -i -e SHAPP_PWORD="{{.SHAPP_PWORD}}" speedhog_db psql -U postgres -f /tmp/speedhog-db-config.sql
+      - docker cp db/. speedhog_db:/tmp/
+      - docker exec -i -e SHAPP_PWORD="{{.SHAPP_PWORD}}" speedhog_db psql -U postgres -f /tmp/auth_user_setup.sql
+      - docker exec -i -e SHAPP_PWORD="{{.SHAPP_PWORD}}" speedhog_db psql -U postgres -d speedhog -f /tmp/speedhog-db-config.sql
 
   db-teardown:
+    deps: [stop-db]
     cmds:
-      - docker compose -f docker/docker-compose.yml down
       - docker volume rm docker_sh_db_data
